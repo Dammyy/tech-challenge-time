@@ -10,6 +10,7 @@ import Tab from "@material-ui/core/Tab";
 import DoneIcon from "@material-ui/icons/Done";
 import EditIcon from "@material-ui/icons/Edit";
 import {
+  sortLatest,
   getTodaysSessions,
   getThisWeekSessions,
   getThisMonthsSessions,
@@ -42,27 +43,28 @@ const App = () => {
   const [value, setValue] = React.useState(0);
   const [count, setCount] = useState(0);
   const [stopped, setStopped] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newSession, setNewSession] = useState(false);
   const [allSessions, setSessions] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
   const [name, setName] = useState("");
   const timerRef = useRef();
-  const sessionsToday = getTodaysSessions(allSessions);
-  const weeksSessions = getThisWeekSessions(allSessions);
-  const monthsSessions = getThisMonthsSessions(allSessions);
 
-  useEffect(() => {
-    setIsLoading(true);
+  const allSessionsSorted = sortLatest(allSessions);
+  const sessionsToday = getTodaysSessions(allSessionsSorted);
+  const weeksSessions = getThisWeekSessions(allSessionsSorted);
+  const monthsSessions = getThisMonthsSessions(allSessionsSorted);
+
+  const fetchSessions = () => {
     const url = "http://localhost:8010/sessions";
     axios.get(url).then((sessions) => {
-      const aSessions = sessions.data;
-      setIsLoading(false);
-      setSessions(aSessions);
-      console.log(aSessions);
+      setSessions(sessions.data);
     });
-  }, [setIsLoading]);
+  };
+
+  useEffect(() => {
+    fetchSessions();
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -86,11 +88,10 @@ const App = () => {
       "Content-Type": "application/json",
     };
 
-    axios.post(url, body, { headers }).then((session) => {
-
-    });
+    axios.post(url, body, { headers }).then((session) => {});
 
     handleCancel();
+    fetchSessions();
   };
 
   const handleInputChange = (event) => {
@@ -138,8 +139,8 @@ const App = () => {
   };
 
   const getAllSessions = () => {
-    return allSessions.length > 0
-      ? allSessions.map((session) => (
+    return allSessionsSorted.length > 0
+      ? allSessionsSorted.map((session) => (
           <div className="session-card">
             <div className="date-display">{formatDate(session.created_at)}</div>
             <div className="session-card-title">{session.name}</div>
@@ -191,9 +192,7 @@ const App = () => {
     return total;
   };
 
-  return isLoading ? (
-    <div>...</div>
-  ) : (
+  return (
     <div className="container">
       <div className="top-section">
         <h1 className="page-title">Time Tracker</h1>
@@ -339,7 +338,7 @@ const App = () => {
             <div className="overview-item">
               Total Time:{" "}
               <span className="total-time">
-                {formatTime(getTotalTime(allSessions))}
+                {formatTime(getTotalTime(allSessionsSorted))}
               </span>
             </div>
           </div>

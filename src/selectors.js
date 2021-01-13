@@ -10,6 +10,12 @@ export const getMonday = () => {
   return dayjs().weekday(1);
 };
 
+export const sortLatest = (sessions) => {
+  return sessions.sort(function (a, b) {
+    return new Date(b.updated_at) - new Date(a.updated_at)
+  })
+}
+
 export const getThisWeekSessions = (sessions) => {
   const monday = dayjs().weekday(1).format("D");
   const sunday = dayjs().weekday(7).format("D");

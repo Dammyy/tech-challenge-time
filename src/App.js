@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import "./App.css";
 import dayjs from "dayjs";
@@ -39,6 +39,8 @@ const TabPanel = (props) => {
 };
 
 const App = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [count, setCount] = useState(0);
@@ -55,16 +57,16 @@ const App = () => {
   const weeksSessions = getThisWeekSessions(allSessionsSorted);
   const monthsSessions = getThisMonthsSessions(allSessionsSorted);
 
-  const fetchSessions = () => {
-    const url = "http://localhost:8010/sessions";
+  const fetchSessions = useCallback(() => {
+    const url = `${apiUrl}/sessions`;
     axios.get(url).then((sessions) => {
       setSessions(sessions.data);
     });
-  };
+  }, [apiUrl]);
 
   useEffect(() => {
     fetchSessions();
-  });
+  }, [fetchSessions]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -77,8 +79,15 @@ const App = () => {
     setStopped(false);
   };
 
+  const refresh = () => {
+    const url = `${apiUrl}/sessions`;
+    axios.get(url).then((sessions) => {
+      setSessions(sessions.data);
+    });
+  };
+
   const handleSave = () => {
-    const url = "http://localhost:8010/session";
+    let url = `${apiUrl}/session`;
     const body = {
       name,
       time: count,
@@ -89,9 +98,10 @@ const App = () => {
     };
 
     axios.post(url, body, { headers }).then((session) => {});
-
     handleCancel();
-    fetchSessions();
+    setTimeout(() => {
+      refresh();
+    }, 2000);
   };
 
   const handleInputChange = (event) => {

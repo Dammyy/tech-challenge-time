@@ -1,38 +1,138 @@
-.App {
-  text-align: center;
+div,
+h1,
+span {
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+  width: 100%;
+  background-color: #fff;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.page-title {
+  font-size: 36px;
+  line-height: 36px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.top-section {
+  width: 100%;
+  height: 60px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  background: #f8f8f8;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.current-session-section {
+  width: 100%;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 40px 0;
 }
 
-.App-link {
-  color: #61dafb;
+.overview-section {
+  width: 100%;
+  margin-top: 50px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sessions-container {
+  max-width: 1050px;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: auto auto auto;
+}
+
+.session-card {
+  min-width: 300px;
+  min-height: 80px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.session-card-title {
+  width: 100%;
+  font-size: 22px;
+  color: #000;
+  text-align: center;
+  text-transform: capitalize;
+  margin-bottom: 5px;
+}
+
+.session-card-time {
+  width: 100%;
+  font-size: 24px;
+  color: #008000;
+  text-align: center;
+  font-weight: bold;
+}
+
+.session-card-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+.session-card-button > button {
+  margin: 5px;
+}
+
+.date-display {
+  width: 100%;
+  height: 20px;
+  font-size: 14px;
+}
+
+.tab-panel-box {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.sessions-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.overview-panel {
+  width: 100%;
+  height: 50px;
+  margin: 10px 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.overview-item {
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.total-time {
+  color: #008000;
+  font-weight: bold;
+}
+
+.margin-right {
+  margin-right: 10px;
+}
+
+.name-input {
+  height: 20px;
+  padding: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  width: 200px;
+}
+
+.input-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.icons-style {
+  margin-top: 4px;
 }
